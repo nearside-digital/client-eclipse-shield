@@ -2,6 +2,14 @@
 
 A short dated entry for every change, newest first. Open issues are at the bottom.
 
+## 2026-10-18: Moving to the Nearside Digital Cloudflare account
+
+- Repo transferred to `nearside-digital/client-eclipse-shield` (the old GitHub address redirects).
+- `eclipseshield.co.uk` added to the Nearside Digital Cloudflare account (pending until the nameservers change to `coby` and `olga.ns.cloudflare.com` at Squarespace). All 12 email and verification records imported from the old zone's export, all DNS only: Google Workspace MX ×5, SPF, DKIM, DMARC, Search Console verification, and Resend's DKIM, `send` and `rsend`.
+- Always Use HTTPS, minimum TLS 1.2, SSL Full, and the www → root 301 Redirect Rule recreated.
+- New Turnstile widget "Eclipse Shield quote form" in the Nearside account; the site key in `src/config/site.ts` is updated to match. Its secret goes in the new Pages project's `TURNSTILE_SECRET_KEY`.
+- Next: Pages project `client-eclipse-shield` in the Nearside account (with `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` secrets), test, switch nameservers, attach the custom domains, send a test quote, then delete the old Pages project and Turnstile widget.
+
 ## 2026-10-12: Live on eclipseshield.co.uk
 
 - DNS moved from Squarespace to Cloudflare. Squarespace remains the registrar. DNSSEC was turned off at Squarespace first, and the removal was confirmed at the .uk registry before switching nameservers to `raina` and `sid.ns.cloudflare.com`.
