@@ -2,6 +2,26 @@
 
 A short dated entry for every change, newest first. Open issues are at the bottom.
 
+## 2026-10-18: Moving to the Nearside Digital Cloudflare account
+
+- Repo transferred to `nearside-digital/client-eclipse-shield` (the old GitHub address redirects).
+- `eclipseshield.co.uk` added to the Nearside Digital Cloudflare account (pending until the nameservers change to `coby` and `olga.ns.cloudflare.com` at Squarespace). All 12 email and verification records imported from the old zone's export, all DNS only: Google Workspace MX ×5, SPF, DKIM, DMARC, Search Console verification, and Resend's DKIM, `send` and `rsend`.
+- Always Use HTTPS, minimum TLS 1.2, SSL Full, and the www → root 301 Redirect Rule recreated.
+- New Turnstile widget "Eclipse Shield quote form" in the Nearside account; the site key in `src/config/site.ts` is updated to match. Its secret goes in the new Pages project's `TURNSTILE_SECRET_KEY`.
+- **Now a Cloudflare Worker, not Pages** (as the other Nearside sites): `wrangler.jsonc` serves `dist` as static assets, and `worker/index.ts` runs only `/api/*`, passing `/api/quote` to the unchanged handler in `functions/api/quote.ts`. 404 page, trailing-slash handling and `_headers` work as before; `noindex` now covers the workers.dev copies. `npm run dev:functions` runs `wrangler dev`. Checked locally: pages 200, unknown page 404, `GET /api/quote` 405, missing spam check refused, and a full dry-run quote with a photo accepted.
+- Worker `client-eclipse-shield` (Workers Builds from `main`) with secrets `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY`.
+- Next: test on workers.dev, switch nameservers, attach the custom domains, send a test quote, then delete the old Pages project and Turnstile widget in the old account.
+
+## 2026-10-12: Live on eclipseshield.co.uk
+
+- DNS moved from Squarespace to Cloudflare. Squarespace remains the registrar. DNSSEC was turned off at Squarespace first, and the removal was confirmed at the .uk registry before switching nameservers to `raina` and `sid.ns.cloudflare.com`.
+- All email records were carried over and checked on Cloudflare's nameserver: Google Workspace MX ×5, DMARC, and Resend's `resend._domainkey`, `send` and `rsend` (the scan missed the two Resend CNAMEs, which were added by hand as DNS only).
+- Google Workspace email authentication added: SPF `v=spf1 include:_spf.google.com ~all` and DKIM (`google._domainkey`, 2048-bit, authentication started in Google Admin).
+- Cloudflare Pages custom domains `eclipseshield.co.uk` and `www`. Redirect Rule www → root (301). Always Use HTTPS (http → https 301).
+- Checked live: HTTPS on both hosts, www redirect, no `noindex` on the real domain, `robots.txt` and sitemap (18 URLs) served to a Googlebot user agent, the quote API configured in production, and a real test lead from the live quote page received at contact@.
+- Google Search Console domain property added and sitemap submitted (`https://eclipseshield.co.uk/sitemap-index.xml`). "Couldn't fetch" at first is the usual delay for a new property.
+- New `docs/dns-records.md`: every DNS record, what it is for, and what breaks if it is removed.
+
 ## 2026-10-12: Image brief and drop-in photos
 
 - `IMAGES.md`: what images to make (subject, shape, pixel size, exact file name), ready-made AI prompts, Canva search terms, rules (honesty, privacy, location data) and a wish list of real job photos.
@@ -102,7 +122,7 @@ A short dated entry for every change, newest first. Open issues are at the botto
 
 - **WhatsApp** is switched off for now (set `whatsapp` in `src/config/site.ts` to enable it later).
 - **Registered office address.** Company number is shown; UK limited companies must also show their registered office address on the website (a registered office service address is fine). Set `registeredOffice` in `src/config/site.ts` before launch.
-- **ICO data protection fee.** Most businesses that handle customer details need to pay this. Should be done before the quote form goes live; the privacy policy will reference the registration.
+- **ICO data protection fee.** Needed now: the quote form is live and collects customer details. Register at ico.org.uk (tier 1 for a small company) and send the ZA… reference so it can go in the privacy policy.
 - **Insurance.** None yet, so the site makes no insurance claims. Add it to "Why us" once it is in place (public liability is worth having for fitting work).
 - **3M film warranty.** Unknown, so not mentioned yet.
 - **Opening hours.** Shown as "Open 7 days a week"; the structured data currently says open 24 hours, 7 days. Confirm what hours customers can actually call.
@@ -110,13 +130,13 @@ A short dated entry for every change, newest first. Open issues are at the botto
 - **Images:** see `IMAGES.md` for the images to make and where to save them.
 - **AI-edited images** in `Web Images` (privacy glass outside, exterior privacy glass) are not used. If they are used later, they must be labelled as illustrations, not real jobs.
 - **Logo files.** A vector (SVG) or high-resolution transparent PNG of the final logo would help for print and future pages.
-- **Domain and email.** The domain is registered through Squarespace. The email provider for `contact@eclipseshield.co.uk` needs confirming before DNS changes (Resend records, custom domain).
 - **Film samples.** If you carry 3M sample swatches to surveys, tell us and the copy can say so (it currently only says "ask us about samples").
 - **Service copy review.** Please read the service pages for anything you don't offer or would describe differently (for example edge attachment for security film, custom logos, fitting on conservatory roofs).
 - **Area copy review.** Check the town lists and local notes on the area pages, and tell us about any towns you would rather not list or want to add.
-- **Quote form go-live checklist:** Resend domain verified; `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` added in Cloudflare Pages for Production and Preview; send a real test from the preview URL and check it arrives (and isn't in spam).
-- **Privacy policy:** draft. Confirm the retention periods (12 months for enquiries that don't go ahead, 6 years for customers) and add the ICO registration number once registered. Cookies and analytics section to be completed with the consent banner.
+- **Privacy policy:** draft. Confirm the retention periods (12 months for enquiries that don't go ahead, 6 years for customers) and add the ICO registration number once registered.
 - **Terms:** draft. Check the quotes and work section matches how you actually work (quote validity, deposits, guarantees), ideally with a solicitor.
 - **Analytics:** when ready, follow `docs/analytics-setup.md` and add the GTM ID. The banner and privacy wording switch on automatically.
-- **Google Workspace email authentication:** the domain has no SPF or DKIM record for Google, so emails you send from contact@ are more likely to go to spam. Add an SPF TXT record (`v=spf1 include:_spf.google.com ~all`) and turn on DKIM in Google Admin.
+- **Search Console:** check the sitemap status changes from "Couldn't fetch" to "Success" within a few days, and request indexing of the home page.
+- **Google Business Profile:** set up as a service-area business (address hidden), category "Window tinting service", linked to the website.
+- **Optional:** turn DNSSEC back on through Cloudflare (see `docs/dns-records.md`).
 - **Optional:** automatic confirmation email to the customer after they submit the form.
