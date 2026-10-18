@@ -13,5 +13,9 @@
     "html_handling": "auto-trailing-slash",
     "run_worker_first": ["/api/*"]
   },
+  // Live on eclipseshield.co.uk. A Worker route (with a proxied AAAA 100:: placeholder record) rather than a
+  // custom domain, so it could be attached while the zone was still pending: no gap at the nameserver switch.
+  // www → apex is a zone Redirect Rule, which runs before the Worker.
+  "routes": [{ "pattern": "eclipseshield.co.uk/*", "zone_name": "eclipseshield.co.uk" }],
   "observability": { "enabled": true }
 }
