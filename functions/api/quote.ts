@@ -91,8 +91,12 @@ export const onRequestPost = async ({ request, env }: Ctx) => {
     return fail(400, 'We couldn’t read the form. Please try again.');
   }
 
-  // Honeypot: real people never fill this in. Pretend it worked so bots learn nothing.
-  if (text(fd, 'company_website')) return json({ ok: true });
+  // Honeypot: real people never fill this in. Pretend it worked so bots learn nothing, but log it
+  // (no form contents) so a real quote dropped this way shows up in the Worker logs.
+  if (text(fd, 'qf_hp_x')) {
+    console.warn('quote: honeypot filled, not sent');
+    return json({ ok: true });
+  }
 
   if (!env.TURNSTILE_SECRET_KEY || (!env.RESEND_API_KEY && env.EMAIL_DRY_RUN !== '1')) {
     console.error('quote: missing configuration');

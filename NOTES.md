@@ -2,6 +2,12 @@
 
 A short dated entry for every change, newest first. Open issues are at the bottom.
 
+## 2026-10-18: Quote form honeypot no longer catches autofill
+
+- Two test quotes on the new Worker returned "sent" but never reached Resend. The hidden spam trap field was named and labelled "Company website", so browser autofill filled it with saved company details, and the form silently treated real people as bots.
+- The trap is now `qf_hp_x`, labelled "Leave this empty" (nothing autofill recognises), with password-manager ignore hints. A filled trap is now logged in the Worker logs ("quote: honeypot filled, not sent", no form contents), so this can't happen silently again.
+- Checked locally: a filled trap returns the fake success and logs; an old-style `company_website` value and a normal quote both go through.
+
 ## 2026-10-18: Moving to the Nearside Digital Cloudflare account
 
 - Repo transferred to `nearside-digital/client-eclipse-shield` (the old GitHub address redirects).
