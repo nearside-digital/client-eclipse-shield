@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Eclipse Shield: static Astro site on Cloudflare Workers (Nearside Digital's account).
+  // Pages are served from ./dist; only /api/* runs worker/index.ts (the quote form).
+  // Secrets (set in the dashboard, kept across deploys): RESEND_API_KEY, TURNSTILE_SECRET_KEY.
+  "name": "client-eclipse-shield",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true }
+}

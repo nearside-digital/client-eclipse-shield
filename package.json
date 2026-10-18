@@ -12,7 +12,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "lh": "node scripts/lighthouse.mjs",
-    "dev:functions": "astro build && npx -y wrangler@4.149.0 pages dev dist --port 8788 --compatibility-date=2026-10-01"
+    "dev:functions": "astro build && npx -y wrangler@4.149.0 dev --port 8788"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

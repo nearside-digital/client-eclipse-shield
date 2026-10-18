@@ -6,8 +6,8 @@
 
 | Type | Name | Value | Proxy | Used for |
 |---|---|---|---|---|
-| CNAME | `eclipseshield.co.uk` | `client-eclipse-shield.pages.dev` | Proxied | The website (created by Cloudflare Pages → Custom domains) |
-| CNAME | `www` | `client-eclipse-shield.pages.dev` | Proxied | `www` (redirected to the main address by a Redirect Rule) |
+| Worker | `eclipseshield.co.uk` | Worker `client-eclipse-shield` | Proxied | The website (Workers → Settings → Domains & Routes → Custom domain) |
+| Worker | `www` | Worker `client-eclipse-shield` | Proxied | `www` (redirected to the main address by a Redirect Rule) |
 | MX ×5 | `@` | `aspmx.l.google.com` (1), `alt1`/`alt2.aspmx.l.google.com` (5), `alt3`/`alt4.aspmx.l.google.com` (10) | DNS only | **Google Workspace email.** Never delete these. |
 | TXT | `@` | `v=spf1 include:_spf.google.com ~all` | DNS only | SPF: allows Google to send as @eclipseshield.co.uk |
 | TXT | `google._domainkey` | `v=DKIM1; k=rsa; p=…` | DNS only | DKIM signature for Google Workspace email |

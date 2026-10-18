@@ -8,7 +8,9 @@ A short dated entry for every change, newest first. Open issues are at the botto
 - `eclipseshield.co.uk` added to the Nearside Digital Cloudflare account (pending until the nameservers change to `coby` and `olga.ns.cloudflare.com` at Squarespace). All 12 email and verification records imported from the old zone's export, all DNS only: Google Workspace MX ×5, SPF, DKIM, DMARC, Search Console verification, and Resend's DKIM, `send` and `rsend`.
 - Always Use HTTPS, minimum TLS 1.2, SSL Full, and the www → root 301 Redirect Rule recreated.
 - New Turnstile widget "Eclipse Shield quote form" in the Nearside account; the site key in `src/config/site.ts` is updated to match. Its secret goes in the new Pages project's `TURNSTILE_SECRET_KEY`.
-- Next: Pages project `client-eclipse-shield` in the Nearside account (with `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` secrets), test, switch nameservers, attach the custom domains, send a test quote, then delete the old Pages project and Turnstile widget.
+- **Now a Cloudflare Worker, not Pages** (as the other Nearside sites): `wrangler.jsonc` serves `dist` as static assets, and `worker/index.ts` runs only `/api/*`, passing `/api/quote` to the unchanged handler in `functions/api/quote.ts`. 404 page, trailing-slash handling and `_headers` work as before; `noindex` now covers the workers.dev copies. `npm run dev:functions` runs `wrangler dev`. Checked locally: pages 200, unknown page 404, `GET /api/quote` 405, missing spam check refused, and a full dry-run quote with a photo accepted.
+- Worker `client-eclipse-shield` (Workers Builds from `main`) with secrets `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY`.
+- Next: test on workers.dev, switch nameservers, attach the custom domains, send a test quote, then delete the old Pages project and Turnstile widget in the old account.
 
 ## 2026-10-12: Live on eclipseshield.co.uk
 
