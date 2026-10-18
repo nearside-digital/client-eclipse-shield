@@ -2,6 +2,17 @@
 
 A short dated entry for every change, newest first. Open issues are at the bottom.
 
+## 2026-10-18: Live from the Nearside Digital account
+
+- Nameservers switched at Squarespace to `coby` and `olga.ns.cloudflare.com`; the .uk registry showed them straight away and the zone went active in the Nearside account about a minute later.
+- Before the switch, the site was attached with a Worker route (`eclipseshield.co.uk/*`) and proxied `AAAA 100::` placeholders, so there was no gap.
+- Checked on the new zone: home and quote 200, unknown page 404, the new quote form (new Turnstile key, new honeypot), www → apex 301 keeping path and query, http → https 301, HSTS, no `noindex` on the real domain, and 5 MX records.
+- A test quote on the workers.dev copy reached Resend and contact@ (with a new Resend key, "Eclipse Shield website (Nearside)").
+
+**Tidy-up (after a few days, once every resolver uses the new nameservers):**
+- In Eclipse Shield's old Cloudflare account: delete the Pages project `eclipseshield` and the old Turnstile widget. The old zone shows "Moved" and deletes itself after 7 days.
+- In Resend: revoke the old `eclipseshield-website` key. The key in the local `Resend.txt` belongs to another Resend account or team; revoke it there, then delete or update the file.
+
 ## 2026-10-18: Quote form honeypot no longer catches autofill
 
 - Two test quotes on the new Worker returned "sent" but never reached Resend. The hidden spam trap field was named and labelled "Company website", so browser autofill filled it with saved company details, and the form silently treated real people as bots.
