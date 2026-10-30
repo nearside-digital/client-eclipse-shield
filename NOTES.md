@@ -2,6 +2,18 @@
 
 A short dated entry for every change, newest first. Open issues are at the bottom.
 
+## 2026-10-30: Look v2: glass cards, lifted photos, reveal-once, magnetic buttons, header no longer sticky
+
+**Why:** Gab's call after the template's "modern" look (client-site-template PR #15): the key features on every client site, keeping each site's own sections and brand. The gold-on-black look is unchanged.
+
+**What:**
+- Cards (services, homes/businesses) are glass: white at 76% with blur over a soft gold glow behind the page, lifted with a shadow, a small rise on hover. The three steps in the dark "how it works" band get the same in dark glass. Solid fallbacks under `prefers-reduced-transparency`.
+- Photos in figures lifted with a shadow. Cards, steps and photos fade up once as they come into view (never text; nothing hidden without the script; off under `prefers-reduced-motion`).
+- Buttons drift towards the pointer on desktop only; the gold button has a soft glow.
+- The header no longer sticks to the top (it took too much of a phone screen while scrolling). The existing phone bar (quote + call) stays and becomes glass.
+
+**Tested:** `npm run build` (19 pages). Previewed at 375px and 1366px. One inline script, no new requests.
+
 ## 2026-10-18: Quote form honeypot no longer catches autofill
 
 - Two test quotes on the new Worker returned "sent" but never reached Resend. The hidden spam trap field was named and labelled "Company website", so browser autofill filled it with saved company details, and the form silently treated real people as bots.
