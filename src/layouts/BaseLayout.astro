@@ -102,5 +102,31 @@ const jsonLd = [localBusiness, ...schema];
     <Footer />
     <MobileCtaBar />
     <ConsentBanner />
+    <script is:inline>
+      /* Look v2 motion (30 Oct 2026). Reveal: cards, steps and photos fade up once as they come into view; nothing
+         is hidden without this script and nothing moves under prefers-reduced-motion. Magnetic buttons: on a
+         desktop pointer only, a button drifts a little towards the mouse and springs back. */
+      (() => {
+        const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+        if (!calm && 'IntersectionObserver' in window) {
+          const targets = document.querySelectorAll('main .card, main .step, main figure');
+          const io = new IntersectionObserver((entries) => {
+            for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+          }, { rootMargin: '0px 0px -8% 0px' });
+          targets.forEach((t, i) => { t.setAttribute('data-reveal', ''); t.style.transitionDelay = `${(i % 3) * 70}ms`; io.observe(t); });
+        }
+        if (fine && !calm) {
+          document.querySelectorAll('.btn').forEach((b) => {
+            b.addEventListener('pointermove', (ev) => {
+              const r = b.getBoundingClientRect();
+              b.style.setProperty('--mx', `${(ev.clientX - r.left - r.width / 2) * 0.18}px`);
+              b.style.setProperty('--my', `${(ev.clientY - r.top - r.height / 2) * 0.3}px`);
+            });
+            b.addEventListener('pointerleave', () => { b.style.setProperty('--mx', '0px'); b.style.setProperty('--my', '0px'); });
+          });
+        }
+      })();
+    </script>
   </body>
 </html>
