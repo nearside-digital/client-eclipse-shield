@@ -31,7 +31,7 @@ export const site = {
   // Google Analytics 4 measurement ID, e.g. 'G-AB12CD34EF' (public), for the tag straight from Google without a
   // Tag Manager container. The Nearside engine creates the property and tells Gabriel the ID; it goes here or in
   // the PUBLIC_GA4_ID build variable. Loads only after the visitor allows analytics, like the container.
-  ga4Id: ((import.meta.env.PUBLIC_GA4_ID as string | undefined) || '').trim(),
+  ga4Id: ((import.meta.env.PUBLIC_GA4_ID as string | undefined) || 'G-Z04VSYT1KK').trim(),
   // Any tracking at all? While false: no tags load, no cookie banner, and the privacy policy says so.
   get tracking() {
     return Boolean(this.gtmId || this.ga4Id);
