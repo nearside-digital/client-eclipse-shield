@@ -1,11 +1,11 @@
 ---
-// Google Consent Mode v2 defaults, plus the Google Tag Manager loader. Goes first in <head>.
-// "Basic" consent mode: GTM is only loaded after the visitor allows analytics, so no Google tags run
+// Google Consent Mode v2 defaults, plus the Google tag loader (Tag Manager container, GA4 tag, or both). Goes first
+// in <head>. "Basic" consent mode: nothing is loaded until the visitor allows analytics, so no Google tags run
 // (and no cookieless pings are sent) before consent.
 import { site } from '../config/site';
 ---
 
-<script is:inline define:vars={{ gtmId: site.gtmId }}>
+<script is:inline define:vars={{ gtmId: site.gtmId, ga4Id: site.ga4Id }}>
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () {
     window.dataLayer.push(arguments);
@@ -21,15 +21,25 @@ import { site } from '../config/site';
   });
   window.gtag('set', 'ads_data_redaction', true);
 
-  window.esConsent = { gtmId: gtmId, choice: null };
+  window.esConsent = { gtmId: gtmId, ga4Id: ga4Id, tracking: Boolean(gtmId || ga4Id), choice: null };
   window.esLoadGtm = function () {
-    if (!gtmId || window.esGtmLoaded) return;
+    if (window.esGtmLoaded) return;
     window.esGtmLoaded = true;
-    window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(gtmId);
-    document.head.appendChild(s);
+    if (gtmId) {
+      window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(gtmId);
+      document.head.appendChild(s);
+    }
+    if (ga4Id) {
+      var g = document.createElement('script');
+      g.async = true;
+      g.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(ga4Id);
+      document.head.appendChild(g);
+      window.gtag('js', new Date());
+      window.gtag('config', ga4Id);
+    }
   };
 
   // Re-apply a saved choice (kept for 12 months, then we ask again).
