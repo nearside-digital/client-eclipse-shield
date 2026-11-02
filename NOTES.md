@@ -2,6 +2,10 @@
 
 A short dated entry for every change, newest first. Open issues are at the bottom.
 
+## 2026-11-02: GA4 measurement ID set (G-Z04VSYT1KK)
+
+The Nearside engine created the property (561918972) today; the ID goes in `site.ts` so the tag loads after consent and the engine can finish the Search Console and access steps. Public value, safe in the repo. `PUBLIC_GA4_ID` still overrides it.
+
 ## 2026-11-02: Google Analytics tag by measurement ID
 
 **Why:** the Nearside engine creates the GA4 property for Growth clients and needs the site to carry its measurement ID. This site only knew a Tag Manager container.
