@@ -5,7 +5,7 @@ import PageLayout from '../layouts/PageLayout.astro';
 import { site } from '../config/site';
 
 const updated = '12 October 2026';
-const analytics = Boolean(site.gtmId);
+const analytics = site.tracking;
 const mail = `mailto:${site.email}`;
 ---
 

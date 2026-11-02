@@ -2,6 +2,14 @@
 
 A short dated entry for every change, newest first. Open issues are at the bottom.
 
+## 2026-11-02: Google Analytics tag by measurement ID
+
+**Why:** the Nearside engine creates the GA4 property for Growth clients and needs the site to carry its measurement ID. This site only knew a Tag Manager container.
+
+**What:** `ga4Id` in `src/config/site.ts` (or the `PUBLIC_GA4_ID` build variable). With it set, the GA4 tag (gtag.js) loads after the visitor allows analytics, exactly like the container; both can be set. `site.tracking` (either ID) now decides whether the cookie banner shows and what the privacy page says. Nothing loads before consent.
+
+**Next:** when the engine emails the measurement ID, set `PUBLIC_GA4_ID` in the Cloudflare build variables (or put the ID in site.ts) and deploy. The engine checks the live page hourly and finishes the set-up.
+
 ## 2026-10-30: Look v2: glass cards, lifted photos, reveal-once, magnetic buttons, header no longer sticky
 
 **Why:** Gab's call after the template's "modern" look (client-site-template PR #15): the key features on every client site, keeping each site's own sections and brand. The gold-on-black look is unchanged.

@@ -5,7 +5,7 @@
 // When a GTM ID is set the banner is in the HTML from the start (so it appears with the first paint),
 // and the small inline script below hides it straight away for visitors who have already chosen.
 import { site } from '../config/site';
-const enabled = Boolean(site.gtmId);
+const enabled = site.tracking;
 ---
 
 <section class="consent" data-consent hidden={!enabled} aria-labelledby="consent-title">
@@ -49,7 +49,7 @@ const enabled = Boolean(site.gtmId);
   const w = window as unknown as Window & {
     dataLayer: unknown[];
     gtag: (...args: unknown[]) => void;
-    esConsent: { gtmId: string; choice: Choice | null };
+    esConsent: { gtmId: string; ga4Id: string; tracking: boolean; choice: Choice | null };
     esLoadGtm: () => void;
     esGtmLoaded?: boolean;
   };
@@ -57,7 +57,7 @@ const enabled = Boolean(site.gtmId);
   const banner = document.querySelector<HTMLElement>('[data-consent]');
   const demo = new URLSearchParams(location.search).has('cookie-demo');
 
-  if (banner && (w.esConsent?.gtmId || demo)) {
+  if (banner && (w.esConsent?.tracking || demo)) {
     const $ = <T extends Element>(sel: string) => banner.querySelector<T>(sel)!;
     const manage = $<HTMLElement>('[data-consent-manage]');
     const analyticsBox = $<HTMLInputElement>('[data-consent-analytics]');
